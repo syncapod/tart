@@ -48,4 +48,58 @@ void main() {
       expect(testStatusCode, equals(statusCodeValue.getValue()));
     });
   });
+
+  group('withHttpRequestHeader', () {
+    test('errors', () {
+      var ctxValue = withHttpRequestHeader(Context(), {'Allow': 'GET'});
+      expect(ctxValue.hasError(), equals(true));
+
+      ctxValue = withHttpRequestHeader(
+          Context(), {'Content-Type': 'application/json'});
+      expect(ctxValue.hasError(), equals(true));
+
+      ctxValue = withHttpRequestHeader(Context(), {'Twirp-Version': '8.0.0'});
+      expect(ctxValue.hasError(), equals(true));
+    });
+
+    test('empty context', () {
+      final header = {'header-key': 'header-value'};
+      final ctxValue = withHttpRequestHeader(Context(), header);
+      expect(ctxValue.hasError(), equals(false));
+      final ctx = ctxValue.getValue();
+      expect(ctx.value(ContextKeys.httpHeader).getValue(), equals(header));
+    });
+
+    test('with other values', () {
+      final initialHeader = {'initial-key': 'initial-value'};
+      final initalCtx =
+          withValue(Context(), ContextKeys.httpHeader, initialHeader);
+
+      final withHeader = {'with-key': 'with-value'};
+      final newCtx = withHttpRequestHeader(initalCtx, withHeader);
+
+      final combinedHeader = {};
+      combinedHeader.addAll(initialHeader);
+      combinedHeader.addAll(withHeader);
+
+      expect(combinedHeader,
+          equals(newCtx.getValue().value(ContextKeys.httpHeader).getValue()));
+    });
+
+    test('overwrite value', () {
+      final initialHeader = {
+        'initial-key': 'initial-value',
+        'overwrite-me': 'will be changed'
+      };
+      final initalCtx =
+          withValue(Context(), ContextKeys.httpHeader, initialHeader);
+
+      final overwriteHeader = {'overwrite-me': 'new value'};
+      final newCtx = withHttpRequestHeader(initalCtx, overwriteHeader);
+
+      initialHeader['overwrite-me'] = 'new value';
+      expect(initialHeader,
+          equals(newCtx.getValue().value(ContextKeys.httpHeader).getValue()));
+    });
+  });
 }
