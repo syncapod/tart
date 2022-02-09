@@ -1,0 +1,21 @@
+syntax = "proto3";
+package protos;
+
+option go_package = ".;protos";
+
+import 'dep.proto';
+
+message PingReq {
+	string message = 1;
+}
+
+message PingRes {
+	string message = 1;
+}
+
+
+service Example {
+	rpc Ping(PingReq) returns (PingRes) { }
+	rpc Dep(DepReq) returns (DepRes) { }
+}
+
