@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package protos;
+option go_package = "github.com/syncapod/tart/example/protos";
+
+enum SuitSize {
+  SM = 0;
+  MD = 1;
+  LG = 2;
+  XL = 3;
+}
+
+message SuitSizeReq {
+  SuitSize size = 1;
+}
+
+message Suit {
+  SuitSize size = 1;
+  string color = 2;
+}
+

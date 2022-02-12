@@ -52,6 +52,12 @@ enum ErrorCode {
   unavailable,
 }
 
+extension ErrorCodeString on ErrorCode {
+  String get shortString {
+    return toString().split('.').last;
+  }
+}
+
 /// twirpErrorMap contains twirp ErrorCodes mapped to http status codes
 Map<ErrorCode, int> twirpErrorMap = {
   ErrorCode.invalid_argument: 400,
@@ -74,16 +80,18 @@ Map<ErrorCode, int> twirpErrorMap = {
   ErrorCode.unavailable: 503,
 };
 
+/// [Error] is a Twirp error implementation that can be used with dart exception handling
+/// Contains [ErrorCode] code, [String] msg, and [Map<String, String>] _meta
 class Error implements Exception {
   ErrorCode code = ErrorCode.unknown;
   String msg = '';
-  Map<String, String> _meta = {};
+  Map<String, dynamic> _meta = {};
 
   Error(this.code, this.msg);
 
   Error.fromJson(Map<String, dynamic> json) {
     code = ErrorCode.values.firstWhere(
-        (element) => element.toString() == json['code'],
+        (element) => element.shortString == json['code'],
         orElse: () => ErrorCode.unknown);
     msg = json['msg'] ?? '';
     _meta = json['meta'] ?? {};
@@ -91,31 +99,36 @@ class Error implements Exception {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['code'] = code.toString();
+    data['code'] = code.shortString;
     data['msg'] = msg;
     data['meta'] = _meta;
     return data;
   }
 
+  /// Error.fromConnectionError is used by generated code to create a twirp error
+  /// from an error message [errMsg] with default [ErrorCode] [ErrorCode.internal]
   Error.fromConnectionError(String errMsg) {
     code = ErrorCode.internal;
     msg = errMsg;
     _meta = {};
   }
 
-  ErrorCode get getCode => code;
-
-  String get getMsg => msg;
-
-  String getMetaValue(String key) {
-    return _meta[key] ?? '';
-  }
-
+  /// withMeta returns a new error the copied meta values of the old error and
+  /// includes the new key/value pair
   Error withMeta(String key, String value) {
     final newErr = Error(code, msg);
     newErr._meta.addAll(_meta);
     newErr._meta[key] = value;
     return newErr;
+  }
+
+  ErrorCode get getCode => code;
+
+  String get getMsg => msg;
+
+  /// getMetaValue returns value if exists else return an empty string
+  String getMetaValue(String key) {
+    return _meta[key] ?? '';
   }
 
   @override

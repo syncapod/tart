@@ -1,6 +1,6 @@
 name: tart
 description: twirp library for dart
-version: 0.0.1
+version: 0.1.0
 # homepage: https://www.syncapod.com/tart
 
 environment:
