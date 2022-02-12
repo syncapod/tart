@@ -5,7 +5,7 @@ enum ContextKeys {
   serviceName,
   packageName,
   statusCode,
-  httpHeader,
+  httpHeaders,
 }
 
 /// Context may passed around used to carry metadata during the lifecycle of a request
@@ -50,7 +50,7 @@ Context withStatusCode(Context ctx, int code) {
   return withValue(ctx, ContextKeys.statusCode, code);
 }
 
-ErrorOr<Context> withHttpRequestHeader(
+ErrorOr<Context> withHttpRequestHeaders(
     Context ctx, Map<String, String> header) {
   final keys = header.keys.toList();
   for (String key in keys) {
@@ -70,7 +70,7 @@ ErrorOr<Context> withHttpRequestHeader(
     }
   }
 
-  final ctxHeaderValue = ctx.value(ContextKeys.httpHeader);
+  final ctxHeaderValue = ctx.value(ContextKeys.httpHeaders);
   Map<String, String> newHeader = {};
   if (!ctxHeaderValue.hasError()) {
     newHeader.addAll(ctxHeaderValue.getValue());
@@ -79,5 +79,13 @@ ErrorOr<Context> withHttpRequestHeader(
   // TODO: how do we know all the header keys are lowercase?
   newHeader.addAll(header);
 
-  return ErrorOr.withValue(withValue(ctx, ContextKeys.httpHeader, newHeader));
+  return ErrorOr.withValue(withValue(ctx, ContextKeys.httpHeaders, newHeader));
+}
+
+ErrorOr<Map<String, String>> retrieveHttpRequestHeaders(Context ctx) {
+  final headerValue = ctx.value(ContextKeys.httpHeaders);
+  if (headerValue.hasError()) {
+    return ErrorOr.withError('no headers exist', {});
+  }
+  return ErrorOr.withValue(headerValue.getValue());
 }

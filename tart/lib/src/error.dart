@@ -85,7 +85,7 @@ Map<ErrorCode, int> twirpErrorMap = {
 class Error implements Exception {
   ErrorCode code = ErrorCode.unknown;
   String msg = '';
-  Map<String, String> _meta = {};
+  Map<String, dynamic> _meta = {};
 
   Error(this.code, this.msg);
 
