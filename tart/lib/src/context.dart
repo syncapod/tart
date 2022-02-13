@@ -17,8 +17,8 @@ class Context {
     if (_map.containsKey(key)) {
       return ErrorOr.withValue(_map[key]);
     }
-    // TODO: not great that this is null, but ErrorOr does warn
-    return ErrorOr.withError("Key not found", null);
+    // TODO: not great that this is an empty string, but ErrorOr does warn
+    return ErrorOr.withError("Key not found", '');
   }
 }
 
@@ -50,6 +50,8 @@ Context withStatusCode(Context ctx, int code) {
   return withValue(ctx, ContextKeys.statusCode, code);
 }
 
+/// withHttpRequestHeaders returns error if headers contain:
+/// allow, content-type, or twirp-version
 ErrorOr<Context> withHttpRequestHeaders(
     Context ctx, Map<String, String> header) {
   final keys = header.keys.toList();
@@ -76,7 +78,6 @@ ErrorOr<Context> withHttpRequestHeaders(
     newHeader.addAll(ctxHeaderValue.getValue());
   }
 
-  // TODO: how do we know all the header keys are lowercase?
   newHeader.addAll(header);
 
   return ErrorOr.withValue(withValue(ctx, ContextKeys.httpHeaders, newHeader));

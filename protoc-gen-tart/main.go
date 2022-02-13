@@ -44,7 +44,6 @@ func generateFile(gen *protogen.Plugin, file *protogen.File) (*protogen.Generate
 	}
 	data.Services = make([]*protogen.Service, len(file.Services))
 	copy(data.Services, file.Services)
-	data.Services[0].Comments.Leading.String()
 
 	// parse template
 	protoTemplate, err := template.New(data.ProtoName).Funcs(funcMap).Parse(twirpTemplate)
