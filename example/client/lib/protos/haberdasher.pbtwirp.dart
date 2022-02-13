@@ -9,11 +9,15 @@ import 'haberdasher.pb.dart';
 import 'suit.pb.dart';
 
 
+/// Haberdasher service makes hats for clients.
 abstract class Haberdasher {
+  /// MakeHat produces a hat of mysterious, randomly-selected color!
   Future<Hat> makeHat(twirp.Context ctx, Size req);
+  /// MakeSuit produces a suit of perfect proportions, with random color
   Future<Suit> makeSuit(twirp.Context ctx, SuitSizeReq req);
 }
 
+/// Haberdasher service makes hats for clients.
 class HaberdasherJSONClient implements Haberdasher {
   String baseUrl;
   String prefix;
@@ -21,9 +25,9 @@ class HaberdasherJSONClient implements Haberdasher {
   late twirp.Interceptor interceptor;
 
   HaberdasherJSONClient(this.baseUrl, this.prefix, {twirp.ClientHooks? hooks, twirp.Interceptor? interceptor}) {
-    if (!baseUrl.endsWith('/')) baseUrl + '/';
-    if (!prefix.endsWith('/')) baseUrl + '/';
-    if (prefix.startsWith('/')) baseUrl = baseUrl.substring(1);
+    if (!baseUrl.endsWith('/')) baseUrl += '/';
+    if (!prefix.endsWith('/')) prefix += '/';
+    if (prefix.startsWith('/')) prefix = prefix.substring(1);
 
     this.hooks = hooks ?? twirp.ClientHooks();
     this.interceptor = interceptor ?? twirp.chainInterceptor([]);
@@ -74,6 +78,7 @@ class HaberdasherJSONClient implements Haberdasher {
   }
 }
 
+/// Haberdasher service makes hats for clients.
 class HaberdasherProtobufClient implements Haberdasher {
   String baseUrl;
   String prefix;
@@ -134,14 +139,19 @@ class HaberdasherProtobufClient implements Haberdasher {
   }
 }
 
-Future<List<int>> doProtobufRequest(twirp.Context ctx, Uri url, twirp.ClientHooks hooks, GeneratedMessage req) async { // setup http client
+Future<List<int>> doProtobufRequest(twirp.Context ctx, Uri url, twirp.ClientHooks hooks, GeneratedMessage req) async {
+  // setup http client
   HttpClient httpClient = HttpClient();
 
   try {
     // setup request
     HttpClientRequest httpClientRequest = await httpClient.post(url.host, url.port, url.path);
+
+    // add required headers
     httpClientRequest.headers.add(HttpHeaders.acceptHeader, 'application/protobuf');
     httpClientRequest.headers.add(HttpHeaders.contentTypeHeader, 'application/protobuf');
+
+    // add headers from context
     final headersFromCtxVal = twirp.retrieveHttpRequestHeaders(ctx);
     if (!headersFromCtxVal.hasError()) {
       headersFromCtxVal.getValue().forEach((key, value) {
@@ -191,8 +201,12 @@ Future<String> doJSONRequest(twirp.Context ctx, Uri url, twirp.ClientHooks hooks
   try {
     // setup request
     HttpClientRequest httpClientRequest = await httpClient.post(url.host, url.port, url.path);
+
+    // add required headers
     httpClientRequest.headers.add(HttpHeaders.acceptHeader, 'application/json');
     httpClientRequest.headers.add(HttpHeaders.contentTypeHeader, 'application/json');
+
+    // add headers from context
     final headersFromCtxVal = twirp.retrieveHttpRequestHeaders(ctx);
     if (!headersFromCtxVal.hasError()) {
       headersFromCtxVal.getValue().forEach((key, value) {

@@ -6,7 +6,7 @@ import 'package:client/protos/suit.pb.dart';
 import 'package:tart/twirp.dart';
 
 void main(List<String> arguments) async {
-  final client = HaberdasherJSONClient("http://localhost:8080/", "twirp/");
+  final client = HaberdasherJSONClient("http://localhost:8080", "twirp");
   try {
     final response =
         await client.makeHat(Context(), Size(inches: Random().nextInt(4) + 6));
