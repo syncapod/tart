@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:client/protos/haberdasher.pbtwirp.dart';
 import 'package:client/protos/haberdasher.pb.dart';
 import 'package:client/protos/suit.pb.dart';
-import 'package:tart/twirp.dart';
+import 'package:tart/tart.dart';
 
 void main(List<String> arguments) async {
   // Creates a HaberdasherProtobufClient, one could also use HaberdashJSONClient instead

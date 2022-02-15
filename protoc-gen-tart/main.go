@@ -94,7 +94,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:protobuf/protobuf.dart';
-import 'package:tart/twirp.dart' as twirp;
+import 'package:tart/tart.dart' as twirp;
 import '{{ .ProtoName }}.pb.dart';
 {{ range $import := .Imports -}}
 import '{{ $import }}.pb.dart';
@@ -162,9 +162,9 @@ class {{ $service.GoName }}ProtobufClient implements {{ $service.GoName }} {
   late twirp.Interceptor interceptor;
 
   {{ $service.GoName }}ProtobufClient(this.baseUrl, this.prefix, {twirp.ClientHooks? hooks, twirp.Interceptor? interceptor}) {
-    if (!baseUrl.endsWith('/')) baseUrl + '/';
-    if (!prefix.endsWith('/')) baseUrl + '/';
-    if (prefix.startsWith('/')) baseUrl = baseUrl.substring(1);
+    if (!baseUrl.endsWith('/')) baseUrl += '/';
+    if (!prefix.endsWith('/')) prefix += '/';
+    if (prefix.startsWith('/')) prefix = prefix.substring(1);
 
     this.hooks = hooks ?? twirp.ClientHooks();
     this.interceptor = interceptor ?? twirp.chainInterceptor([]);

@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:protobuf/protobuf.dart';
-import 'package:tart/twirp.dart' as twirp;
+import 'package:tart/tart.dart' as twirp;
 import 'haberdasher.pb.dart';
 import 'suit.pb.dart';
 
@@ -86,9 +86,9 @@ class HaberdasherProtobufClient implements Haberdasher {
   late twirp.Interceptor interceptor;
 
   HaberdasherProtobufClient(this.baseUrl, this.prefix, {twirp.ClientHooks? hooks, twirp.Interceptor? interceptor}) {
-    if (!baseUrl.endsWith('/')) baseUrl + '/';
-    if (!prefix.endsWith('/')) baseUrl + '/';
-    if (prefix.startsWith('/')) baseUrl = baseUrl.substring(1);
+    if (!baseUrl.endsWith('/')) baseUrl += '/';
+    if (!prefix.endsWith('/')) prefix += '/';
+    if (prefix.startsWith('/')) prefix = prefix.substring(1);
 
     this.hooks = hooks ?? twirp.ClientHooks();
     this.interceptor = interceptor ?? twirp.chainInterceptor([]);
