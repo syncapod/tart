@@ -63,4 +63,4 @@ This project is licensed under the Apache 2.0 License
 
 ## Acknowledgments
 
-* [titchtv/twirp](https://github.com/twitchtv/twirp)
+* [twitchtv/twirp](https://github.com/twitchtv/twirp)
