@@ -9,28 +9,25 @@ import 'context.dart';
 /// This can enable some powerful integrations, but it should be used with much care
 /// because it may result in code that is very hard to debug.
 ///
-///  TODO: update this example to a dart example
 /// Example of an interceptor that logs every request and response:
 ///
-///   func LogInterceptor(l *log.Logger) twirp.Interceptor {
-///     return func(next twirp.Method) twirp.Method {
-///       return func(ctx context.Context, req interface{}) (interface{}, error) {
-///         l.Printf("Service: %s, Method: %s, Request: %v",
-///             twirp.ServiceName(ctx), twirp.MethodName(ctx), req)
-///         resp, err := next(ctx, req)
-///         l.Printf("Response: %v, Error: %v", resp)
-///         return resp, err
-///       }
-///     }
-///   }
+///	tart.Interceptor LogInterceptor(Logger l) {
+///	  return (Method next) {
+///	    return (Context ctx, dynamic req) {
+///	      l.print('''Service: ${ctx.value(tart.ContextKeys.serviceName)}, Method: ${ctx.value(tart.ContextKeys.methodName)}''');
+///	      return next(ctx, req);
+///	    };
+///	  };
+///	}
+///
 ///
 typedef Interceptor = Method Function(Method);
 
 // Method is a generic representation of a Twirp-generated RPC method.
 // It is used to define Interceptors.
-typedef Method<Q, R> = R Function(Context, R);
+typedef Method<Q, R, T> = T Function(Context, R);
 
-/// ChainInterceptors chains multiple Interceptors into a single Interceptor.
+/// chainInterceptor chains multiple Interceptors into a single Interceptor.
 /// The first interceptor wraps the second one, and so on.
 /// Returns an empty bypass Interceptor if list is empty
 Interceptor chainInterceptor(List<Interceptor> interceptors) {

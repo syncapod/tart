@@ -8,6 +8,7 @@ environment:
 
 
 dependencies:
+  http: ^0.13.4
   protobuf: ^2.0.1
   tart:
     path: ../../tart/

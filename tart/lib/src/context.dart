@@ -1,5 +1,3 @@
-import 'package:tart/src/error_or.dart';
-
 enum ContextKeys {
   methodName,
   serviceName,
@@ -9,16 +7,11 @@ enum ContextKeys {
 }
 
 /// Context may passed around used to carry metadata during the lifecycle of a request
-/// Unlike Go's context, this object contains nothing involving deadlines or cancellations
 class Context {
   final Map<dynamic, dynamic> _map = <dynamic, dynamic>{};
 
-  ErrorOr<dynamic> value(dynamic key) {
-    if (_map.containsKey(key)) {
-      return ErrorOr.withValue(_map[key]);
-    }
-    // TODO: not great that this is an empty string, but ErrorOr does warn
-    return ErrorOr.withError("Key not found", '');
+  dynamic value(dynamic key) {
+    return _map[key];
   }
 }
 
@@ -52,41 +45,31 @@ Context withStatusCode(Context ctx, int code) {
 
 /// withHttpRequestHeaders returns error if headers contain:
 /// allow, content-type, or twirp-version
-ErrorOr<Context> withHttpRequestHeaders(
-    Context ctx, Map<String, String> header) {
-  final keys = header.keys.toList();
+Context withHttpRequestHeaders(Context ctx, Map<String, String> headersToAdd) {
+  final keys = headersToAdd.keys.toList();
   for (String key in keys) {
-    final value = header[key] ?? '';
-    header.remove(key);
+    final value = headersToAdd[key] ?? '';
+    headersToAdd.remove(key);
     key = key.toLowerCase();
-    header[key] = value;
+    headersToAdd[key] = value;
     switch (key) {
       case 'allow':
-        return ErrorOr.withError('provided header cannot set allow', ctx);
+        throw Exception('provided header cannot set allow');
       case 'content-type':
-        return ErrorOr.withError(
-            'provided header cannot set content-type', ctx);
+        throw Exception('provided header cannot set content-type');
       case 'twirp-version':
-        return ErrorOr.withError(
-            'provided header cannot set twirp-version', ctx);
+        throw Exception('provided header cannot set twirp-version');
     }
   }
 
-  final ctxHeaderValue = ctx.value(ContextKeys.httpHeaders);
-  Map<String, String> newHeader = {};
-  if (!ctxHeaderValue.hasError()) {
-    newHeader.addAll(ctxHeaderValue.getValue());
-  }
+  final Map<String, String> newHeaders = {};
+  final Map<String, String> headers = ctx.value(ContextKeys.httpHeaders) ?? {};
+  newHeaders.addAll(headers);
+  newHeaders.addAll(headersToAdd);
 
-  newHeader.addAll(header);
-
-  return ErrorOr.withValue(withValue(ctx, ContextKeys.httpHeaders, newHeader));
+  return withValue(ctx, ContextKeys.httpHeaders, newHeaders);
 }
 
-ErrorOr<Map<String, String>> retrieveHttpRequestHeaders(Context ctx) {
-  final headerValue = ctx.value(ContextKeys.httpHeaders);
-  if (headerValue.hasError()) {
-    return ErrorOr.withError('no headers exist', {});
-  }
-  return ErrorOr.withValue(headerValue.getValue());
+Map<String, String>? retrieveHttpRequestHeaders(Context ctx) {
+  return ctx.value(ContextKeys.httpHeaders);
 }
