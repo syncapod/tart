@@ -24,9 +24,9 @@ Tart
 
 For more information on dependencies please refer to [tart/pubspec.yaml](tart/pubspec.yaml) and [protoc-gen-tart/go.mod](protoc-gen-tart/go.mod)
 
-### Installing
+## Installing
 
-## protoc-gen-tart
+### protoc-gen-tart
 
 Download binary from release page and place into a folder included in $PATH
 
@@ -36,7 +36,7 @@ Download binary from release page and place into a folder included in $PATH
 2. cd tart/protoc-gen-tart
 3. go install
 
-## Tart Dart Library
+### Tart Dart Library
 
 Add the following packages to your Dart or Flutter project:
 
@@ -45,7 +45,7 @@ Add the following packages to your Dart or Flutter project:
 * [Tart](https://pub.dev/packages/tart)
 
 
-### Generating code with protoc-gen-tart & protoc-gen-dart
+## Generating code with protoc-gen-tart & protoc-gen-dart
 
 Please refer to [protoc-gen-tart README.md](protoc-gen-tart/README.md)
 
