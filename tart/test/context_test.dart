@@ -8,9 +8,9 @@ void main() {
     final value = "testValue";
     final newCtx = withValue(ctx, key, value);
     expect(newCtx, isNot(equals(ctx)));
+
     final newCtxValue = newCtx.value(key);
-    expect(false, equals(newCtxValue.hasError()));
-    expect(newCtxValue.getValue(), equals(value));
+    expect(newCtxValue, equals(value));
   });
 
   group('Context with twirp values', () {
@@ -25,49 +25,51 @@ void main() {
     ctx = withStatusCode(ctx, testStatusCode);
 
     test('method name', () {
-      final methodNameValue = ctx.value(ContextKeys.methodName);
-      expect(methodNameValue.hasError(), equals(false));
-      expect(testMethodName, equals(methodNameValue.getValue()));
+      final methodName = ctx.value(ContextKeys.methodName);
+      expect(testMethodName, equals(methodName));
     });
 
     test('service name', () {
-      final serviceNameValue = ctx.value(ContextKeys.serviceName);
-      expect(serviceNameValue.hasError(), equals(false));
-      expect(testServiceName, equals(serviceNameValue.getValue()));
+      final serviceName = ctx.value(ContextKeys.serviceName);
+      expect(testServiceName, equals(serviceName));
     });
 
     test('package name', () {
-      final packageNameValue = ctx.value(ContextKeys.packageName);
-      expect(packageNameValue.hasError(), equals(false));
-      expect(testPackageName, equals(packageNameValue.getValue()));
+      final packageName = ctx.value(ContextKeys.packageName);
+      expect(testPackageName, equals(packageName));
     });
 
     test('status code', () {
-      final statusCodeValue = ctx.value(ContextKeys.statusCode);
-      expect(statusCodeValue.hasError(), equals(false));
-      expect(testStatusCode, equals(statusCodeValue.getValue()));
+      final statusCode = ctx.value(ContextKeys.statusCode);
+      expect(testStatusCode, equals(statusCode));
     });
   });
 
   group('withHttpRequestHeader', () {
     test('errors', () {
-      var ctxValue = withHttpRequestHeaders(Context(), {'Allow': 'GET'});
-      expect(ctxValue.hasError(), equals(true));
+      try {
+        withHttpRequestHeaders(Context(), {'Allow': 'GET'});
+      } catch (e) {
+        expect(e.toString(), contains('cannot set allow'));
+      }
 
-      ctxValue = withHttpRequestHeaders(
-          Context(), {'Content-Type': 'application/json'});
-      expect(ctxValue.hasError(), equals(true));
+      try {
+        withHttpRequestHeaders(Context(), {'Content-Type': 'application/json'});
+      } catch (e) {
+        expect(e.toString(), contains('cannot set content-type'));
+      }
 
-      ctxValue = withHttpRequestHeaders(Context(), {'Twirp-Version': '8.0.0'});
-      expect(ctxValue.hasError(), equals(true));
+      try {
+        withHttpRequestHeaders(Context(), {'Twirp-Version': '8.1.0'});
+      } catch (e) {
+        expect(e.toString(), contains('cannot set twirp-version'));
+      }
     });
 
     test('empty context', () {
       final header = {'header-key': 'header-value'};
-      final ctxValue = withHttpRequestHeaders(Context(), header);
-      expect(ctxValue.hasError(), equals(false));
-      final ctx = ctxValue.getValue();
-      expect(ctx.value(ContextKeys.httpHeaders).getValue(), equals(header));
+      final ctx = withHttpRequestHeaders(Context(), header);
+      expect(ctx.value(ContextKeys.httpHeaders), equals(header));
     });
 
     test('with other values', () {
@@ -76,14 +78,13 @@ void main() {
           withValue(Context(), ContextKeys.httpHeaders, initialHeader);
 
       final withHeader = {'with-key': 'with-value'};
-      final newCtx = withHttpRequestHeaders(initalCtx, withHeader);
+      final ctx = withHttpRequestHeaders(initalCtx, withHeader);
 
       final combinedHeader = {};
       combinedHeader.addAll(initialHeader);
       combinedHeader.addAll(withHeader);
 
-      expect(combinedHeader,
-          equals(newCtx.getValue().value(ContextKeys.httpHeaders).getValue()));
+      expect(combinedHeader, equals(ctx.value(ContextKeys.httpHeaders)));
     });
 
     test('overwrite value', () {
@@ -98,19 +99,15 @@ void main() {
       final newCtx = withHttpRequestHeaders(initalCtx, overwriteHeader);
 
       initialHeader['overwrite-me'] = 'new value';
-      expect(initialHeader,
-          equals(newCtx.getValue().value(ContextKeys.httpHeaders).getValue()));
+      expect(initialHeader, equals(newCtx.value(ContextKeys.httpHeaders)));
     });
 
     test('retrieveHttpRequestHeaders', () {
       final headers = {'header-key': 'header-value'};
-      final ctxValue = withHttpRequestHeaders(Context(), headers);
-      expect(ctxValue.hasError(), equals(false));
-      final ctx = ctxValue.getValue();
+      final ctx = withHttpRequestHeaders(Context(), headers);
 
       final headersFromCtx = retrieveHttpRequestHeaders(ctx);
-      expect(headersFromCtx.hasError(), equals(false));
-      expect(headersFromCtx.getValue(), equals(headers));
+      expect(headersFromCtx, equals(headers));
     });
   });
 }
