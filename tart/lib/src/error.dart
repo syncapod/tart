@@ -1,3 +1,5 @@
+import 'package:tart/tart.dart';
+
 enum ErrorCode {
   /// The client specified an invalid argument. This indicates arguments that are invalid regardless of the state of the system (i.e. a malformed file name, required argument, number out of range, etc.).
   invalid_argument,
@@ -80,51 +82,60 @@ Map<ErrorCode, int> twirpErrorMap = {
   ErrorCode.unavailable: 503,
 };
 
-/// [Error] is a Twirp error implementation that can be used with dart exception handling
-/// Contains [ErrorCode] code, [String] msg, and [Map<String, String>] _meta
-class Error implements Exception {
-  ErrorCode code = ErrorCode.unknown;
-  String msg = '';
+/// [TwirpError] is a Twirp error implementation that can be used with dart exception handling
+/// Contains [ErrorCode] _code, [String] _msg, [Map<String, String>] _meta, [Context] _ctx
+class TwirpError implements Exception {
+  late ErrorCode _code;
+  late String _msg;
   Map<String, dynamic> _meta = {};
+  late Context _ctx;
 
-  Error(this.code, this.msg);
+  TwirpError(ErrorCode code, String msg, Context ctx) {
+    _code = code;
+    _msg = msg;
+    _ctx = ctx;
+  }
 
-  Error.fromJson(Map<String, dynamic> json) {
-    code = ErrorCode.values.firstWhere(
+  TwirpError.fromJson(Map<String, dynamic> json, Context ctx) {
+    _code = ErrorCode.values.firstWhere(
         (element) => element.shortString == json['code'],
         orElse: () => ErrorCode.unknown);
-    msg = json['msg'] ?? '';
+    _msg = json['msg'] ?? '';
     _meta = json['meta'] ?? {};
+    _ctx = ctx;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['code'] = code.shortString;
-    data['msg'] = msg;
+    data['code'] = _code.shortString;
+    data['msg'] = _msg;
     data['meta'] = _meta;
     return data;
   }
 
   /// Error.fromConnectionError is used by generated code to create a twirp error
   /// from an error message [errMsg] with default [ErrorCode] [ErrorCode.internal]
-  Error.fromConnectionError(String errMsg) {
-    code = ErrorCode.internal;
-    msg = errMsg;
+  TwirpError.fromConnectionError(String errMsg, Context ctx) {
+    _code = ErrorCode.internal;
+    _msg = errMsg;
     _meta = {};
+    _ctx = ctx;
   }
 
   /// withMeta returns a new error the copied meta values of the old error and
   /// includes the new key/value pair
-  Error withMeta(String key, String value) {
-    final newErr = Error(code, msg);
+  TwirpError withMeta(String key, String value) {
+    final newErr = TwirpError(_code, _msg, _ctx);
     newErr._meta.addAll(_meta);
     newErr._meta[key] = value;
     return newErr;
   }
 
-  ErrorCode get getCode => code;
+  ErrorCode get getCode => _code;
 
-  String get getMsg => msg;
+  String get getMsg => _msg;
+
+  Context get getContext => _ctx;
 
   /// getMetaValue returns value if exists else return an empty string
   String getMetaValue(String key) {
@@ -133,6 +144,6 @@ class Error implements Exception {
 
   @override
   String toString() {
-    return 'twirp error $code: $msg';
+    return 'twirp error $_code: $_msg';
   }
 }

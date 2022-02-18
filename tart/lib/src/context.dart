@@ -53,12 +53,12 @@ Context withHttpRequestHeaders(Context ctx, Map<String, String> headersToAdd) {
     key = key.toLowerCase();
     headersToAdd[key] = value;
     switch (key) {
-      case 'allow':
-        throw Exception('provided header cannot set allow');
+      case 'accept':
+        throw InvalidTwirpHeader('provided header cannot set accept');
       case 'content-type':
-        throw Exception('provided header cannot set content-type');
+        throw InvalidTwirpHeader('provided header cannot set content-type');
       case 'twirp-version':
-        throw Exception('provided header cannot set twirp-version');
+        throw InvalidTwirpHeader('provided header cannot set twirp-version');
     }
   }
 
@@ -72,4 +72,17 @@ Context withHttpRequestHeaders(Context ctx, Map<String, String> headersToAdd) {
 
 Map<String, String>? retrieveHttpRequestHeaders(Context ctx) {
   return ctx.value(ContextKeys.httpHeaders);
+}
+
+class InvalidTwirpHeader implements Exception {
+  late String _msg;
+
+  InvalidTwirpHeader(String msg) {
+    _msg = msg;
+  }
+
+  @override
+  String toString() {
+    return _msg;
+  }
 }

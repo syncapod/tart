@@ -7,35 +7,37 @@ import 'package:http/http.dart';
 import 'package:tart/tart.dart';
 
 void main(List<String> arguments) async {
-  // Creates a HaberdasherProtobufClient, one could also use HaberdashJSONClient instead
-  // We can optionally pass in client hooks as well as a interceptor
-  final client = HaberdasherProtobufClient("http://localhost:8080", "twirp",
-      hooks: ClientHooks(
-        onRequestPrepared: onClientRequestPrepared,
-      ),
-      interceptor: myInterceptor());
-
-  // any context created with withHttpRequestHeaders will automatically
-  // be added to the HttpClientRequest headers
-  late Context ctx;
   try {
-    ctx =
+    // Creates a HaberdasherProtobufClient, one could also use HaberdasherJSONClient instead
+    // We can optionally pass in client hooks as well as a interceptor
+    final client = HaberdasherProtobufClient("http://localhost:8080", "twirp",
+        hooks: ClientHooks(
+          onRequestPrepared: onClientRequestPrepared,
+        ),
+        interceptor: myInterceptor());
+
+    // any context created with withHttpRequestHeaders will automatically
+    // be added to the HttpClientRequest headers
+    // for a less magic way the Auth-Token can be added with the onClientRequestPrepared client hook
+    final ctx =
         withHttpRequestHeaders(Context(), {'Auth-Token': 'SuperSecretAPIKey'});
-  } catch (e) {
-    print('Could not add headers to context: $e');
-    return;
-  }
 
-  try {
-    final response =
+    final hat =
         await client.makeHat(ctx, Size(inches: Random().nextInt(4) + 6));
-    print("Hat made: ${response.inches}in ${response.color} ${response.name}");
+    print("Hat made: ${hat.inches}in ${hat.color} ${hat.name}");
 
-    final response2 =
-        await client.makeSuit(ctx, SuitSizeReq(size: SuitSize.LG));
-    print("Suit made: ${response2.size} ${response2.color}");
-  } catch (e) {
-    print('Error while calling makeHat(): $e');
+    final suit = await client.makeSuit(ctx, SuitSizeReq(size: SuitSize.LG));
+    print("Suit made: ${suit.size} ${suit.color}");
+  } on TwirpError catch (e) {
+    final method =
+        e.getContext.value(ContextKeys.methodName) ?? 'unknown method';
+    print(
+        'Twirp error on method: $method. Code: ${e.getCode}. Message: ${e.getMsg}');
+  } on InvalidTwirpHeader catch (e) {
+    print('InvalidTwirpHeader: $e');
+  } catch (e, stack) {
+    print('Unknown Exception Occurred: $e');
+    print('Stack trace: $stack');
   }
 }
 

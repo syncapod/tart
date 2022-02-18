@@ -168,14 +168,14 @@ Future<List<int>> doProtobufRequest(twirp.Context ctx, Uri url,
     }
 
     // we received a twirp related error
-    throw twirp.Error.fromJson(
-        json.decode(await res.stream.transform(utf8.decoder).join()));
-  } on twirp.Error catch (twirpErr) {
+    throw twirp.TwirpError.fromJson(
+        json.decode(await res.stream.transform(utf8.decoder).join()), ctx);
+  } on twirp.TwirpError catch (twirpErr) {
     hooks.onError(ctx, twirpErr);
     rethrow;
   } catch (e) {
     // catch http connection error or from onRequestPrepared
-    final twirpErr = twirp.Error.fromConnectionError(e.toString());
+    final twirpErr = twirp.TwirpError.fromConnectionError(e.toString(), ctx);
     hooks.onError(ctx, twirpErr);
     throw twirpErr;
   } finally {
@@ -211,14 +211,14 @@ Future<String> doJSONRequest(twirp.Context ctx, Uri url,
     }
 
     // we received a twirp related error
-    throw twirp.Error.fromJson(
-        json.decode(await res.stream.transform(utf8.decoder).join()));
-  } on twirp.Error catch (twirpErr) {
+    throw twirp.TwirpError.fromJson(
+        json.decode(await res.stream.transform(utf8.decoder).join()), ctx);
+  } on twirp.TwirpError catch (twirpErr) {
     hooks.onError(ctx, twirpErr);
     rethrow;
   } catch (e) {
-    // catch http connection error
-    final twirpErr = twirp.Error.fromConnectionError(e.toString());
+    // catch http connection error or from onRequestPrepared
+    final twirpErr = twirp.TwirpError.fromConnectionError(e.toString(), ctx);
     hooks.onError(ctx, twirpErr);
     throw twirpErr;
   } finally {

@@ -12,7 +12,7 @@ class ClientHooks {
   Function(Context ctx) onResponseReceived;
 
   /// onError called only if an error was returned through the network.
-  Function(Context ctx, Error err) onError;
+  Function(Context ctx, TwirpError err) onError;
 
   ClientHooks({
     this.onRequestPrepared = defaultOnRequestPrepared,

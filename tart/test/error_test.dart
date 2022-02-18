@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:tart/src/error.dart' as $terr;
+import 'package:tart/tart.dart';
 
 void main() {
   const jsonCode = 'internal';
@@ -14,36 +14,36 @@ void main() {
   group('Twirp Error Test:', () {
     test('basic error intantiation', () {
       final msg = "database connection failed";
-      final twirpError = $terr.Error($terr.ErrorCode.internal, msg);
+      final twirpError = TwirpError(ErrorCode.internal, msg, Context());
       expect(twirpError.getMsg, equals(msg));
-      expect(twirpError.getCode, equals($terr.ErrorCode.internal));
+      expect(twirpError.getCode, equals(ErrorCode.internal));
     });
 
     test('fromJson()', () {
-      final errorFromJson = $terr.Error.fromJson(connectionErrorJson);
-      expect(errorFromJson.code.shortString, equals(jsonCode));
-      expect(errorFromJson.msg, equals(jsonMsg));
+      final errorFromJson = TwirpError.fromJson(connectionErrorJson, Context());
+      expect(errorFromJson.getCode.shortString, equals(jsonCode));
+      expect(errorFromJson.getMsg, equals(jsonMsg));
       expect(errorFromJson.getMetaValue(jsonMetaKey),
           equals(jsonMeta[jsonMetaKey]));
     });
 
     test('toJson()', () {
       final msg = "database connection failed";
-      final twirpError = $terr.Error($terr.ErrorCode.internal, msg);
+      final twirpError = TwirpError(ErrorCode.internal, msg, Context());
       final json = twirpError.toJson();
-      expect(json['code'], $terr.ErrorCode.internal.shortString);
+      expect(json['code'], ErrorCode.internal.shortString);
       expect(json['msg'], equals(msg));
     });
 
     test('fromConnectionError', () {
       final msg = 'http connection failure';
-      final err = $terr.Error.fromConnectionError(msg);
-      expect(err.getCode, $terr.ErrorCode.internal);
+      final err = TwirpError.fromConnectionError(msg, Context());
+      expect(err.getCode, ErrorCode.internal);
       expect(err.getMsg, equals(msg));
     });
 
     test('withMeta & getMetaValue', () {
-      final err = $terr.Error($terr.ErrorCode.not_found, "not found");
+      final err = TwirpError(ErrorCode.not_found, "not found", Context());
       final key1 = "key1";
       final value1 = "value1";
       final err1 = err.withMeta(key1, value1);
@@ -53,7 +53,7 @@ void main() {
       final err2 = err1.withMeta(key2, value2);
       expect(err2.getMetaValue(key1), equals(value1));
       expect(err2.getMetaValue(key2), equals(value2));
-      expect(err2.getCode, $terr.ErrorCode.not_found);
+      expect(err2.getCode, ErrorCode.not_found);
       expect(err2.getMsg, equals("not found"));
     });
   });
