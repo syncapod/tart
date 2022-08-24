@@ -113,11 +113,14 @@ import '{{ $import }}.pb.dart';
 {{end }}
 
 {{ range $service := .Services -}}
-/{{ removeNewLine $service.Comments.Leading.String }}
+{{ removeNewLine $service.Comments.Leading.String }}
 abstract class {{ $service.GoName }} {
 {{- range $method := $service.Methods }}
-  /{{ removeNewLine $method.Comments.Leading.String }}
-  Future<{{ $method.Output.Desc.Name }}> {{ lowerFirstLetter $method.GoName }}(twirp.Context ctx, {{ $method.Input.Desc.Name }} req);
+  {{ removeNewLine $method.Comments.Leading.String }}
+  Future<{{ $method.Output.Desc.Name }}> {{ lowerFirstLetter $method.GoName }}(
+		twirp.Context ctx, 
+		{{ $method.Input.Desc.Name }} req,
+	);
 {{- end }}
 }
 {{- end }}
@@ -125,7 +128,7 @@ abstract class {{ $service.GoName }} {
 {{- $protoName := .ProtoName }}
 
 {{ range $service := .Services -}}
-/{{ removeNewLine $service.Comments.Leading.String }}
+{{ removeNewLine $service.Comments.Leading.String }}
 class {{ $service.GoName }}JSONClient implements {{ $service.GoName }} {
   String baseUrl;
   String prefix;
@@ -143,7 +146,10 @@ class {{ $service.GoName }}JSONClient implements {{ $service.GoName }} {
   {{- range $method := $service.Methods }}
 
   @override
-  Future<{{ $method.Output.Desc.Name }}> {{ lowerFirstLetter $method.GoName }}(twirp.Context ctx, {{ $method.Input.Desc.Name }} req) async {
+  Future<{{ $method.Output.Desc.Name }}> {{ lowerFirstLetter $method.GoName }}(
+		twirp.Context ctx, 
+		{{ $method.Input.Desc.Name }} req,
+		) async {
     ctx = twirp.withPackageName(ctx, '{{ $method.Desc.ParentFile.Package.Name }}');
     ctx = twirp.withServiceName(ctx, '{{ $service.GoName }}');
     ctx = twirp.withMethodName(ctx, '{{ $method.GoName }}');
@@ -166,7 +172,7 @@ class {{ $service.GoName }}JSONClient implements {{ $service.GoName }} {
   {{- end }}
 }
 
-/{{ removeNewLine $service.Comments.Leading.String }}
+{{ removeNewLine $service.Comments.Leading.String }}
 class {{ $service.GoName }}ProtobufClient implements {{ $service.GoName }} {
   String baseUrl;
   String prefix;
