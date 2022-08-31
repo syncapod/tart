@@ -19,7 +19,8 @@ const Size$json = const {
 };
 
 /// Descriptor for `Size`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List sizeDescriptor = $convert.base64Decode('CgRTaXplEhYKBmluY2hlcxgBIAEoBVIGaW5jaGVz');
+final $typed_data.Uint8List sizeDescriptor =
+    $convert.base64Decode('CgRTaXplEhYKBmluY2hlcxgBIAEoBVIGaW5jaGVz');
 @$core.Deprecated('Use hatDescriptor instead')
 const Hat$json = const {
   '1': 'Hat',
@@ -31,8 +32,10 @@ const Hat$json = const {
 };
 
 /// Descriptor for `Hat`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List hatDescriptor = $convert.base64Decode('CgNIYXQSFgoGaW5jaGVzGAEgASgFUgZpbmNoZXMSFAoFY29sb3IYAiABKAlSBWNvbG9yEhIKBG5hbWUYAyABKAlSBG5hbWU=');
-const $core.Map<$core.String, $core.dynamic> HaberdasherServiceBase$json = const {
+final $typed_data.Uint8List hatDescriptor = $convert.base64Decode(
+    'CgNIYXQSFgoGaW5jaGVzGAEgASgFUgZpbmNoZXMSFAoFY29sb3IYAiABKAlSBWNvbG9yEhIKBG5hbWUYAyABKAlSBG5hbWU=');
+const $core.Map<$core.String, $core.dynamic> HaberdasherServiceBase$json =
+    const {
   '1': 'Haberdasher',
   '2': const [
     const {'1': 'MakeHat', '2': '.protos.Size', '3': '.protos.Hat'},
@@ -41,7 +44,8 @@ const $core.Map<$core.String, $core.dynamic> HaberdasherServiceBase$json = const
 };
 
 @$core.Deprecated('Use haberdasherServiceDescriptor instead')
-const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> HaberdasherServiceBase$messageJson = const {
+const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
+    HaberdasherServiceBase$messageJson = const {
   '.protos.Size': Size$json,
   '.protos.Hat': Hat$json,
   '.protos.SuitSizeReq': $0.SuitSizeReq$json,
@@ -49,4 +53,5 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> Haberdashe
 };
 
 /// Descriptor for `Haberdasher`. Decode as a `google.protobuf.ServiceDescriptorProto`.
-final $typed_data.Uint8List haberdasherServiceDescriptor = $convert.base64Decode('CgtIYWJlcmRhc2hlchIkCgdNYWtlSGF0EgwucHJvdG9zLlNpemUaCy5wcm90b3MuSGF0Ei0KCE1ha2VTdWl0EhMucHJvdG9zLlN1aXRTaXplUmVxGgwucHJvdG9zLlN1aXQ=');
+final $typed_data.Uint8List haberdasherServiceDescriptor = $convert.base64Decode(
+    'CgtIYWJlcmRhc2hlchIkCgdNYWtlSGF0EgwucHJvdG9zLlNpemUaCy5wcm90b3MuSGF0Ei0KCE1ha2VTdWl0EhMucHJvdG9zLlN1aXRTaXplUmVxGgwucHJvdG9zLlN1aXQ=');

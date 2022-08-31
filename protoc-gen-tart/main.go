@@ -101,7 +101,7 @@ type stringModifyFn func(s string) string
 // addComment returns nothing if comment is empty
 func addComment(c string) string {
 	if len(c) > 0 {
-		return "/" + c
+		return "\n/" + removeNewLine(c)
 	}
 	return ""
 }
@@ -124,15 +124,14 @@ import '{{ .ProtoName }}.pb.dart';
 {{ range $import := .Imports -}}
 import '{{ $import }}.pb.dart';
 {{end }}
-
-{{ range $service := .Services -}}
-{{ removeNewLine $service.Comments.Leading.String }}
+{{ range $service := .Services -}} 
+{{ addComment $service.Comments.Leading.String }}
 abstract class {{ $service.GoName }} {
-{{- range $method := $service.Methods }}
-  {{ removeNewLine $method.Comments.Leading.String }}
+{{- range $method := $service.Methods }}   
+  {{ addComment $method.Comments.Leading.String }}
   Future<{{ $method.Output.Desc.Name }}> {{ lowerFirstLetter $method.GoName }}(
-		twirp.Context ctx, 
-		{{ $method.Input.Desc.Name }} req,
+     twirp.Context ctx, 
+     {{ $method.Input.Desc.Name }} req,
 	);
 {{- end }}
 }
@@ -140,13 +139,14 @@ abstract class {{ $service.GoName }} {
 
 {{- $protoName := .ProtoName }}
 
-{{ range $service := .Services -}}{{ addComment $service.Comments.Leading.String }}
+{{ range $service := .Services -}}
+{{ addComment $service.Comments.Leading.String }}
 class {{ $service.GoName }}JSONClient implements {{ $service.GoName }} {
   String baseUrl;
   String prefix;
   late twirp.ClientHooks hooks;
   late twirp.Interceptor interceptor;
-
+  {{ addComment $service.Comments.Leading.String }}
   {{ $service.GoName }}JSONClient(this.baseUrl, this.prefix, {twirp.ClientHooks? hooks, twirp.Interceptor? interceptor}) {
     if (!baseUrl.endsWith('/')) baseUrl += '/';
     if (!prefix.endsWith('/')) prefix += '/';
@@ -189,7 +189,7 @@ class {{ $service.GoName }}ProtobufClient implements {{ $service.GoName }} {
   String prefix;
   late twirp.ClientHooks hooks;
   late twirp.Interceptor interceptor;
-
+  {{ addComment $service.Comments.Leading.String }}
   {{ $service.GoName }}ProtobufClient(this.baseUrl, this.prefix, {twirp.ClientHooks? hooks, twirp.Interceptor? interceptor}) {
     if (!baseUrl.endsWith('/')) baseUrl += '/';
     if (!prefix.endsWith('/')) prefix += '/';

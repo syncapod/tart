@@ -18,25 +18,34 @@ export 'haberdasher.pb.dart';
 
 abstract class HaberdasherServiceBase extends $pb.GeneratedService {
   $async.Future<$1.Hat> makeHat($pb.ServerContext ctx, $1.Size request);
-  $async.Future<$0.Suit> makeSuit($pb.ServerContext ctx, $0.SuitSizeReq request);
+  $async.Future<$0.Suit> makeSuit(
+      $pb.ServerContext ctx, $0.SuitSizeReq request);
 
   $pb.GeneratedMessage createRequest($core.String method) {
     switch (method) {
-      case 'MakeHat': return $1.Size();
-      case 'MakeSuit': return $0.SuitSizeReq();
-      default: throw $core.ArgumentError('Unknown method: $method');
+      case 'MakeHat':
+        return $1.Size();
+      case 'MakeSuit':
+        return $0.SuitSizeReq();
+      default:
+        throw $core.ArgumentError('Unknown method: $method');
     }
   }
 
-  $async.Future<$pb.GeneratedMessage> handleCall($pb.ServerContext ctx, $core.String method, $pb.GeneratedMessage request) {
+  $async.Future<$pb.GeneratedMessage> handleCall($pb.ServerContext ctx,
+      $core.String method, $pb.GeneratedMessage request) {
     switch (method) {
-      case 'MakeHat': return this.makeHat(ctx, request as $1.Size);
-      case 'MakeSuit': return this.makeSuit(ctx, request as $0.SuitSizeReq);
-      default: throw $core.ArgumentError('Unknown method: $method');
+      case 'MakeHat':
+        return this.makeHat(ctx, request as $1.Size);
+      case 'MakeSuit':
+        return this.makeSuit(ctx, request as $0.SuitSizeReq);
+      default:
+        throw $core.ArgumentError('Unknown method: $method');
     }
   }
 
-  $core.Map<$core.String, $core.dynamic> get $json => HaberdasherServiceBase$json;
-  $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> get $messageJson => HaberdasherServiceBase$messageJson;
+  $core.Map<$core.String, $core.dynamic> get $json =>
+      HaberdasherServiceBase$json;
+  $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
+      get $messageJson => HaberdasherServiceBase$messageJson;
 }
-
