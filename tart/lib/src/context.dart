@@ -43,8 +43,9 @@ Context withStatusCode(Context ctx, int code) {
   return withValue(ctx, ContextKeys.statusCode, code);
 }
 
-/// withHttpRequestHeaders returns error if headers contain:
-/// allow, content-type, or twirp-version
+/// withHttpRequestHeaders adds [headersToAdd] to the given [ctx])
+/// Will throw [InvalidTwirpHeader] if allow, content-type, or twirp-version
+/// are trying to be set
 Context withHttpRequestHeaders(Context ctx, Map<String, String> headersToAdd) {
   final keys = headersToAdd.keys.toList();
   for (String key in keys) {
