@@ -1,3 +1,4 @@
+/// ContextKeys is a enumerated type defined to easily pull values from a Context
 enum ContextKeys {
   methodName,
   serviceName,
@@ -71,8 +72,8 @@ Context withHttpRequestHeaders(Context ctx, Map<String, String> headersToAdd) {
   return withValue(ctx, ContextKeys.httpHeaders, newHeaders);
 }
 
-Map<String, String>? retrieveHttpRequestHeaders(Context ctx) {
-  return ctx.value(ContextKeys.httpHeaders);
+Map<String, String> retrieveHttpRequestHeaders(Context ctx) {
+  return ctx.value(ContextKeys.httpHeaders) ?? {};
 }
 
 class InvalidTwirpHeader implements Exception {
