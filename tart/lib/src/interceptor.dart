@@ -25,7 +25,7 @@ typedef Interceptor = Method Function(Method);
 
 // Method is a generic representation of a Twirp-generated RPC method.
 // It is used to define Interceptors.
-typedef Method<Q, R, T> = T Function(Context, R);
+typedef Method<R, T> = T Function(Context, R);
 
 /// chainInterceptor chains multiple Interceptors into a single Interceptor.
 /// The first interceptor wraps the second one, and so on.

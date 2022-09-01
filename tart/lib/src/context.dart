@@ -1,3 +1,4 @@
+/// ContextKeys is a enumerated type defined to easily pull values from a Context
 enum ContextKeys {
   methodName,
   serviceName,
@@ -43,8 +44,9 @@ Context withStatusCode(Context ctx, int code) {
   return withValue(ctx, ContextKeys.statusCode, code);
 }
 
-/// withHttpRequestHeaders returns error if headers contain:
-/// allow, content-type, or twirp-version
+/// withHttpRequestHeaders adds [headersToAdd] to the given [ctx])
+/// Will throw [InvalidTwirpHeader] if allow, content-type, or twirp-version
+/// are trying to be set
 Context withHttpRequestHeaders(Context ctx, Map<String, String> headersToAdd) {
   final keys = headersToAdd.keys.toList();
   for (String key in keys) {
@@ -70,8 +72,8 @@ Context withHttpRequestHeaders(Context ctx, Map<String, String> headersToAdd) {
   return withValue(ctx, ContextKeys.httpHeaders, newHeaders);
 }
 
-Map<String, String>? retrieveHttpRequestHeaders(Context ctx) {
-  return ctx.value(ContextKeys.httpHeaders);
+Map<String, String> retrieveHttpRequestHeaders(Context ctx) {
+  return ctx.value(ContextKeys.httpHeaders) ?? {};
 }
 
 class InvalidTwirpHeader implements Exception {

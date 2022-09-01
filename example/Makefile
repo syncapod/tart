@@ -15,6 +15,7 @@ proto:
 		--go_out=paths=source_relative:./server/protos \
 		-I ./protos/ \
 		./protos/*.proto
+	dart format .
 
 clean:
 	rm -f ./server/protos/*

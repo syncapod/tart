@@ -8,6 +8,7 @@
 import 'dart:core' as $core;
 import 'dart:convert' as $convert;
 import 'dart:typed_data' as $typed_data;
+
 @$core.Deprecated('Use suitSizeDescriptor instead')
 const SuitSize$json = const {
   '1': 'SuitSize',
@@ -20,25 +21,42 @@ const SuitSize$json = const {
 };
 
 /// Descriptor for `SuitSize`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List suitSizeDescriptor = $convert.base64Decode('CghTdWl0U2l6ZRIGCgJTTRAAEgYKAk1EEAESBgoCTEcQAhIGCgJYTBAD');
+final $typed_data.Uint8List suitSizeDescriptor = $convert
+    .base64Decode('CghTdWl0U2l6ZRIGCgJTTRAAEgYKAk1EEAESBgoCTEcQAhIGCgJYTBAD');
 @$core.Deprecated('Use suitSizeReqDescriptor instead')
 const SuitSizeReq$json = const {
   '1': 'SuitSizeReq',
   '2': const [
-    const {'1': 'size', '3': 1, '4': 1, '5': 14, '6': '.protos.SuitSize', '10': 'size'},
+    const {
+      '1': 'size',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.protos.SuitSize',
+      '10': 'size'
+    },
   ],
 };
 
 /// Descriptor for `SuitSizeReq`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List suitSizeReqDescriptor = $convert.base64Decode('CgtTdWl0U2l6ZVJlcRIkCgRzaXplGAEgASgOMhAucHJvdG9zLlN1aXRTaXplUgRzaXpl');
+final $typed_data.Uint8List suitSizeReqDescriptor = $convert.base64Decode(
+    'CgtTdWl0U2l6ZVJlcRIkCgRzaXplGAEgASgOMhAucHJvdG9zLlN1aXRTaXplUgRzaXpl');
 @$core.Deprecated('Use suitDescriptor instead')
 const Suit$json = const {
   '1': 'Suit',
   '2': const [
-    const {'1': 'size', '3': 1, '4': 1, '5': 14, '6': '.protos.SuitSize', '10': 'size'},
+    const {
+      '1': 'size',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.protos.SuitSize',
+      '10': 'size'
+    },
     const {'1': 'color', '3': 2, '4': 1, '5': 9, '10': 'color'},
   ],
 };
 
 /// Descriptor for `Suit`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List suitDescriptor = $convert.base64Decode('CgRTdWl0EiQKBHNpemUYASABKA4yEC5wcm90b3MuU3VpdFNpemVSBHNpemUSFAoFY29sb3IYAiABKAlSBWNvbG9y');
+final $typed_data.Uint8List suitDescriptor = $convert.base64Decode(
+    'CgRTdWl0EiQKBHNpemUYASABKA4yEC5wcm90b3MuU3VpdFNpemVSBHNpemUSFAoFY29sb3IYAiABKAlSBWNvbG9y');
