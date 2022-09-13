@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:http/http.dart' as http;
+
 import 'context.dart';
 import 'error.dart';
 
@@ -6,7 +9,7 @@ import 'error.dart';
 /// They provide callbacks for before and after the request is sent over the network.
 class ClientHooks {
   /// onRequestPrepared is after request has been prepared and immediately before request is sent
-  Context Function(Context ctx, http.Request req) onRequestPrepared;
+  Future<Context> Function(Context ctx, http.Request req) onRequestPrepared;
 
   /// onResponseReceived is only called when response has been received without error
   Function(Context ctx) onResponseReceived;
@@ -20,7 +23,7 @@ class ClientHooks {
     this.onError = defaultOnError,
   });
 
-  static Context defaultOnRequestPrepared(ctx, req) => ctx;
+  static Future<Context> defaultOnRequestPrepared(ctx, req) => ctx;
 
   static void defaultOnResponseReceived(ctx) {/* do nothing */}
 
