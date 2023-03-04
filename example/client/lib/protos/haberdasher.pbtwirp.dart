@@ -168,7 +168,7 @@ Future<List<int>> doProtobufRequest(twirp.Context ctx, Uri url,
     req.bodyBytes = msgReq.writeToBuffer();
 
     // call onRequestPrepared hook for user to modify request
-    ctx = hooks.onRequestPrepared(ctx, req);
+    ctx = await hooks.onRequestPrepared(ctx, req);
 
     // send data
     final res = await httpClient.send(req);
@@ -179,7 +179,7 @@ Future<List<int>> doProtobufRequest(twirp.Context ctx, Uri url,
       await res.stream.listen((value) {
         data.addAll(value);
       }).asFuture();
-      hooks.onResponseReceived(ctx);
+      await hooks.onResponseReceived(ctx);
       return Future.value(data);
     }
 
@@ -187,12 +187,12 @@ Future<List<int>> doProtobufRequest(twirp.Context ctx, Uri url,
     throw twirp.TwirpError.fromJson(
         json.decode(await res.stream.transform(utf8.decoder).join()), ctx);
   } on twirp.TwirpError catch (twirpErr) {
-    hooks.onError(ctx, twirpErr);
+    await hooks.onError(ctx, twirpErr);
     rethrow;
   } catch (e) {
     // catch http connection error or from onRequestPrepared
     final twirpErr = twirp.TwirpError.fromConnectionError(e.toString(), ctx);
-    hooks.onError(ctx, twirpErr);
+    await hooks.onError(ctx, twirpErr);
     throw twirpErr;
   } finally {
     httpClient.close();
@@ -212,17 +212,15 @@ Future<String> doJSONRequest(twirp.Context ctx, Uri url,
     req.body = json.encode(msgReq.toProto3Json());
 
     // call onRequestPrepared hook for user to modify request
-    ctx = hooks.onRequestPrepared(ctx, req);
+    ctx = await hooks.onRequestPrepared(ctx, req);
 
     // send data
     final res = await httpClient.send(req);
 
     // if success, parse and return response
     if (res.statusCode == 200) {
-      final data = await res.stream.transform(utf8.decoder).join().then((data) {
-        hooks.onResponseReceived(ctx);
-        return data;
-      });
+      final data = await res.stream.transform(utf8.decoder).join();
+      await hooks.onResponseReceived(ctx);
       return Future.value(data);
     }
 
@@ -230,12 +228,12 @@ Future<String> doJSONRequest(twirp.Context ctx, Uri url,
     throw twirp.TwirpError.fromJson(
         json.decode(await res.stream.transform(utf8.decoder).join()), ctx);
   } on twirp.TwirpError catch (twirpErr) {
-    hooks.onError(ctx, twirpErr);
+    await hooks.onError(ctx, twirpErr);
     rethrow;
   } catch (e) {
     // catch http connection error or from onRequestPrepared
     final twirpErr = twirp.TwirpError.fromConnectionError(e.toString(), ctx);
-    hooks.onError(ctx, twirpErr);
+    await hooks.onError(ctx, twirpErr);
     throw twirpErr;
   } finally {
     httpClient.close();

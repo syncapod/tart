@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:client/protos/haberdasher.pbtwirp.dart';
 import 'package:client/protos/haberdasher.pb.dart';
+import 'package:client/protos/haberdasher.pbtwirp.dart';
 import 'package:client/protos/suit.pb.dart';
 import 'package:http/http.dart';
 import 'package:tart/tart.dart';
@@ -13,6 +13,22 @@ void main(List<String> arguments) async {
     final client = HaberdasherProtobufClient("http://localhost:8080", "twirp",
         hooks: ClientHooks(
           onRequestPrepared: onClientRequestPrepared,
+          onError: (ctx, err) async {
+            print('ClientHooks.OnError: waiting one second');
+            await Future.delayed(Duration(seconds: 1));
+            final method =
+                ctx.value(ContextKeys.methodName) ?? 'unknown method';
+            print(
+                'ClientHooks.OnError: Twirp error on method: $method. Code: ${err.getCode}. Message: ${err.getMsg}');
+          },
+          onResponseReceived: (ctx) async {
+            print('ClientHooks.onResponseReceived: waiting one second');
+            await Future.delayed(Duration(seconds: 1));
+            final method =
+                ctx.value(ContextKeys.methodName) ?? 'unknown method';
+            print(
+                'ClientHooks.onResponseReceived: Response recieved from method: $method.');
+          },
         ),
         interceptor: myInterceptor());
 
@@ -28,11 +44,14 @@ void main(List<String> arguments) async {
 
     final suit = await client.makeSuit(ctx, SuitSizeReq(size: SuitSize.LG));
     print("Suit made: ${suit.size} ${suit.color}");
+
+    // This will create an error to test the error handler
+    await client.makeHat(ctx, Size(inches: 0));
   } on TwirpError catch (e) {
     final method =
         e.getContext.value(ContextKeys.methodName) ?? 'unknown method';
     print(
-        'Twirp error on method: $method. Code: ${e.getCode}. Message: ${e.getMsg}');
+        'TwirpError catch : Twirp error on method: $method. Code: ${e.getCode}. Message: ${e.getMsg}');
   } on InvalidTwirpHeader catch (e) {
     print('InvalidTwirpHeader: $e');
   } catch (e, stack) {
