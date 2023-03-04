@@ -64,6 +64,7 @@ Please create an issue for any errors or help executing the protoc plugin or usi
 
 * [sschwartz96](https://github.com/sschwartz96)
 * [CGA1123](https://github.com/CGA1123)
+* [b099l3](https://github.com/b099l3)
 
 ## License
 
