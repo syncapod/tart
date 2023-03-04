@@ -9,13 +9,13 @@ import 'error.dart';
 /// They provide callbacks for before and after the request is sent over the network.
 class ClientHooks {
   /// onRequestPrepared is after request has been prepared and immediately before request is sent
-  Future<Context> Function(Context ctx, http.Request req) onRequestPrepared;
+  FutureOr<Context> Function(Context ctx, http.Request req) onRequestPrepared;
 
   /// onResponseReceived is only called when response has been received without error
-  Function(Context ctx) onResponseReceived;
+  FutureOr<void> Function(Context ctx) onResponseReceived;
 
   /// onError called only if an error was returned through the network.
-  Function(Context ctx, TwirpError err) onError;
+  FutureOr<void> Function(Context ctx, TwirpError err) onError;
 
   ClientHooks({
     this.onRequestPrepared = defaultOnRequestPrepared,
@@ -23,9 +23,9 @@ class ClientHooks {
     this.onError = defaultOnError,
   });
 
-  static Future<Context> defaultOnRequestPrepared(ctx, req) => ctx;
+  static FutureOr<Context> defaultOnRequestPrepared(ctx, req) => ctx;
 
-  static void defaultOnResponseReceived(ctx) {/* do nothing */}
+  static FutureOr<void> defaultOnResponseReceived(ctx) {/* do nothing */}
 
-  static void defaultOnError(ctx, err) {/* do nothing */}
+  static FutureOr<void> defaultOnError(ctx, err) {/* do nothing */}
 }
