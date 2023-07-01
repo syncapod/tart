@@ -11,4 +11,5 @@
 * tart library:	    updates doc comments in library
 
 ### 0.4.0
-* protoc-gen-tart:  now supports async methods on client hooks; onRequestPrepared, onResponseReceived, onError
+* protoc-gen-tart: now supports async methods on client hooks; onRequestPrepared, onResponseReceived, onError
+* tart library: now supports async methods on client hooks; onRequestPrepared, onResponseReceived, onError

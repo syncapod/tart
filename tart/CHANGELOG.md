@@ -9,3 +9,7 @@
 * protoc-gen-tart:  now supports relative import paths of generated files
 * protoc-gen-tart:  fixes issues where code would not compile if .proto source files did not have comments
 * tart library:	    updates doc comments in library
+
+### 0.4.0
+* protoc-gen-tart: now supports async methods on client hooks; onRequestPrepared, onResponseReceived, onError
+* tart library: now supports async methods on client hooks; onRequestPrepared, onResponseReceived, onError
