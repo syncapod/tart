@@ -13,3 +13,6 @@
 ### 0.4.0
 * protoc-gen-tart: now supports async methods on client hooks; onRequestPrepared, onResponseReceived, onError
 * tart library: now supports async methods on client hooks; onRequestPrepared, onResponseReceived, onError
+
+### 0.5.0
+* tart library: upgrade to use http v1.1.0
