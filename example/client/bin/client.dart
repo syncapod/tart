@@ -38,15 +38,19 @@ void main(List<String> arguments) async {
     final ctx =
         withHttpRequestHeaders(Context(), {'Auth-Token': 'SuperSecretAPIKey'});
 
+    final z = Size()..inches = 4;
+    z.inches = 1;
+
     final hat =
-        await client.makeHat(ctx, Size(inches: Random().nextInt(4) + 6));
+        await client.makeHat(ctx, Size()..inches = Random().nextInt(4) + 6);
     print("Hat made: ${hat.inches}in ${hat.color} ${hat.name}");
 
-    final suit = await client.makeSuit(ctx, SuitSizeReq(size: SuitSize.LG));
+    final suit = await client.makeSuit(ctx, SuitSizeReq()..size = SuitSize.LG);
     print("Suit made: ${suit.size} ${suit.color}");
 
     // This will create an error to test the error handler
-    await client.makeHat(ctx, Size(inches: 0));
+    print("\nExpecting error:");
+    await client.makeHat(ctx, Size()..inches = 0);
   } on TwirpError catch (e) {
     final method =
         e.getContext.value(ContextKeys.methodName) ?? 'unknown method';
