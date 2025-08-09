@@ -44,11 +44,20 @@ void main() {
         };
       }
 
-      final interceptor = chainInterceptor([interceptor1, interceptor2]);
+      Method asyncInterceptor2(Method next) {
+        return (ctx, req) async {
+          final value = ctx.value(key);
+          final newCtx = withValue(ctx, key, value * 2);
+          return next(newCtx, req);
+        };
+      }
+
+      final interceptor =
+          chainInterceptor([interceptor1, interceptor2, asyncInterceptor2]);
       interceptor((ctx, req) {
         return Future.value(ctx.value(key));
       })(Context(), 'mocked req')
-          .then((value) => expect(value, equals(2)));
+          .then((value) => expect(value, equals(4)));
     });
   });
 }

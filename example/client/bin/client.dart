@@ -76,7 +76,7 @@ Context onClientRequestPrepared(Context ctx, Request req) {
 /// could represent another interceptor by using [chainInterceptor] or the actual RPC call
 Interceptor myInterceptor(/* pass in any dependencies needed */) {
   return (Method next) {
-    return (Context ctx, dynamic req) {
+    return (Context ctx, dynamic req) async {
       switch (req.runtimeType) {
         case Size:
           print('This will be ran before the makeHat call');

@@ -1,14 +1,14 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: haberdasher.proto
-//
-// @dart = 2.12
+// Generated from haberdasher.proto.
 
-// ignore_for_file: annotate_overrides, camel_case_types
+// @dart = 3.3
+
+// ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
 // ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: non_constant_identifier_names
 
 import 'dart:async' as $async;
 import 'dart:core' as $core;
@@ -41,9 +41,9 @@ abstract class HaberdasherServiceBase extends $pb.GeneratedService {
       $core.String methodName, $pb.GeneratedMessage request) {
     switch (methodName) {
       case 'MakeHat':
-        return this.makeHat(ctx, request as $1.Size);
+        return makeHat(ctx, request as $1.Size);
       case 'MakeSuit':
-        return this.makeSuit(ctx, request as $0.SuitSizeReq);
+        return makeSuit(ctx, request as $0.SuitSizeReq);
       default:
         throw $core.ArgumentError('Unknown method: $methodName');
     }

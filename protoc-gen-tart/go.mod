@@ -1,5 +1,7 @@
 module github.com/syncapod/tart/protoc-gen-tart
 
-go 1.17
+go 1.22
 
-require google.golang.org/protobuf v1.27.1
+toolchain go1.24.5
+
+require google.golang.org/protobuf v1.36.7
