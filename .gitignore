@@ -27,3 +27,5 @@ doc/api/
 .flutter-plugins-dependencies
 
 .env
+# Added by goreleaser init:
+dist/
