@@ -165,7 +165,7 @@ class {{ $service.GoName }}JSONClient implements {{ $service.GoName }} {
     ctx = twirp.withPackageName(ctx, '{{ $method.Desc.ParentFile.Package.Name }}');
     ctx = twirp.withServiceName(ctx, '{{ $service.GoName }}');
     ctx = twirp.withMethodName(ctx, '{{ $method.GoName }}');
-    return interceptor((ctx, req) {
+    return await interceptor((ctx, req) {
       return call{{ $method.GoName }}(ctx, req);
     })(ctx, req);
   }
@@ -205,7 +205,7 @@ class {{ $service.GoName }}ProtobufClient implements {{ $service.GoName }} {
     ctx = twirp.withPackageName(ctx, '{{ $method.Desc.ParentFile.Package.Name }}');
     ctx = twirp.withServiceName(ctx, '{{ $service.GoName }}');
     ctx = twirp.withMethodName(ctx, '{{ $method.GoName }}');
-    return interceptor((ctx, req) {
+    return await interceptor((ctx, req) {
       return call{{ $method.GoName }}(ctx, req);
     })(ctx, req);
   }

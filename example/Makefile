@@ -1,10 +1,10 @@
 .PHONY: proto clean server client
 
 client:
-	cd ./client/; dart run
+	cd ./client/ && dart run
 
 server:
-	cd ./server/; go run .
+	cd ./server/ && go run main.go
 
 proto:
 	protoc --tart_out=paths=source_relative:./client/lib/protos \

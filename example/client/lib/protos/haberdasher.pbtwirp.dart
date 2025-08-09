@@ -49,7 +49,7 @@ class HaberdasherJSONClient implements Haberdasher {
     ctx = twirp.withPackageName(ctx, 'protos');
     ctx = twirp.withServiceName(ctx, 'Haberdasher');
     ctx = twirp.withMethodName(ctx, 'MakeHat');
-    return interceptor((ctx, req) {
+    return await interceptor((ctx, req) {
       return callMakeHat(ctx, req);
     })(ctx, req);
   }
@@ -74,7 +74,7 @@ class HaberdasherJSONClient implements Haberdasher {
     ctx = twirp.withPackageName(ctx, 'protos');
     ctx = twirp.withServiceName(ctx, 'Haberdasher');
     ctx = twirp.withMethodName(ctx, 'MakeSuit');
-    return interceptor((ctx, req) {
+    return await interceptor((ctx, req) {
       return callMakeSuit(ctx, req);
     })(ctx, req);
   }
@@ -115,7 +115,7 @@ class HaberdasherProtobufClient implements Haberdasher {
     ctx = twirp.withPackageName(ctx, 'protos');
     ctx = twirp.withServiceName(ctx, 'Haberdasher');
     ctx = twirp.withMethodName(ctx, 'MakeHat');
-    return interceptor((ctx, req) {
+    return await interceptor((ctx, req) {
       return callMakeHat(ctx, req);
     })(ctx, req);
   }
@@ -137,7 +137,7 @@ class HaberdasherProtobufClient implements Haberdasher {
     ctx = twirp.withPackageName(ctx, 'protos');
     ctx = twirp.withServiceName(ctx, 'Haberdasher');
     ctx = twirp.withMethodName(ctx, 'MakeSuit');
-    return interceptor((ctx, req) {
+    return await interceptor((ctx, req) {
       return callMakeSuit(ctx, req);
     })(ctx, req);
   }

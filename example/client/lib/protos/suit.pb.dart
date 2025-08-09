@@ -1,13 +1,14 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: suit.proto
-//
-// @dart = 2.12
+// Generated from suit.proto.
 
-// ignore_for_file: annotate_overrides, camel_case_types
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// @dart = 3.3
+
+// ignore_for_file: annotate_overrides, camel_case_types, comment_references
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names
 
 import 'dart:core' as $core;
 
@@ -15,17 +16,27 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'suit.pbenum.dart';
 
+export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
+
 export 'suit.pbenum.dart';
 
 class SuitSizeReq extends $pb.GeneratedMessage {
-  factory SuitSizeReq() => create();
-  SuitSizeReq._() : super();
-  factory SuitSizeReq.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory SuitSizeReq.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
+  factory SuitSizeReq({
+    SuitSize? size,
+  }) {
+    final result = create();
+    if (size != null) result.size = size;
+    return result;
+  }
+
+  SuitSizeReq._();
+
+  factory SuitSizeReq.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory SuitSizeReq.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'SuitSizeReq',
@@ -37,21 +48,19 @@ class SuitSizeReq extends $pb.GeneratedMessage {
         enumValues: SuitSize.values)
     ..hasRequiredFields = false;
 
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SuitSizeReq clone() => SuitSizeReq()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SuitSizeReq copyWith(void Function(SuitSizeReq) updates) =>
       super.copyWith((message) => updates(message as SuitSizeReq))
           as SuitSizeReq;
 
+  @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
   static SuitSizeReq create() => SuitSizeReq._();
+  @$core.override
   SuitSizeReq createEmptyInstance() => create();
   static $pb.PbList<SuitSizeReq> createRepeated() => $pb.PbList<SuitSizeReq>();
   @$core.pragma('dart2js:noInline')
@@ -62,25 +71,32 @@ class SuitSizeReq extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   SuitSize get size => $_getN(0);
   @$pb.TagNumber(1)
-  set size(SuitSize v) {
-    setField(1, v);
-  }
-
+  set size(SuitSize value) => $_setField(1, value);
   @$pb.TagNumber(1)
   $core.bool hasSize() => $_has(0);
   @$pb.TagNumber(1)
-  void clearSize() => clearField(1);
+  void clearSize() => $_clearField(1);
 }
 
 class Suit extends $pb.GeneratedMessage {
-  factory Suit() => create();
-  Suit._() : super();
-  factory Suit.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory Suit.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
+  factory Suit({
+    SuitSize? size,
+    $core.String? color,
+  }) {
+    final result = create();
+    if (size != null) result.size = size;
+    if (color != null) result.color = color;
+    return result;
+  }
+
+  Suit._();
+
+  factory Suit.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Suit.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Suit',
@@ -93,20 +109,18 @@ class Suit extends $pb.GeneratedMessage {
     ..aOS(2, _omitFieldNames ? '' : 'color')
     ..hasRequiredFields = false;
 
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Suit clone() => Suit()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Suit copyWith(void Function(Suit) updates) =>
       super.copyWith((message) => updates(message as Suit)) as Suit;
 
+  @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
   static Suit create() => Suit._();
+  @$core.override
   Suit createEmptyInstance() => create();
   static $pb.PbList<Suit> createRepeated() => $pb.PbList<Suit>();
   @$core.pragma('dart2js:noInline')
@@ -117,28 +131,23 @@ class Suit extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   SuitSize get size => $_getN(0);
   @$pb.TagNumber(1)
-  set size(SuitSize v) {
-    setField(1, v);
-  }
-
+  set size(SuitSize value) => $_setField(1, value);
   @$pb.TagNumber(1)
   $core.bool hasSize() => $_has(0);
   @$pb.TagNumber(1)
-  void clearSize() => clearField(1);
+  void clearSize() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get color => $_getSZ(1);
   @$pb.TagNumber(2)
-  set color($core.String v) {
-    $_setString(1, v);
-  }
-
+  set color($core.String value) => $_setString(1, value);
   @$pb.TagNumber(2)
   $core.bool hasColor() => $_has(1);
   @$pb.TagNumber(2)
-  void clearColor() => clearField(2);
+  void clearColor() => $_clearField(2);
 }
 
-const _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const _omitMessageNames =
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
     $core.bool.fromEnvironment('protobuf.omit_message_names');
